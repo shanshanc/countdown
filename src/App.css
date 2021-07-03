@@ -28,6 +28,22 @@
   color: #61dafb;
 }
 
+.countdown-title {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.main-clock {
+  font-size: 3rem;
+  display: flex;
+  flex-direction: row;
+}
+
+footer {
+  margin-top: 2rem;
+}
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

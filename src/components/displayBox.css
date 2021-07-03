@@ -1,0 +1,10 @@
+.countdown-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 1rem;
+}
+
+.unit {
+  font-size: 1.2rem;
+}
