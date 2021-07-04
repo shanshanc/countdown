@@ -16,12 +16,18 @@ const INITIAL_STATE = {
   seconds: 0,
 }
 
-function App() {
-  // Default target date be the end of 2021 UTC
-  const [targetDate, setTargetDate] = useState(new Date(2021, 11, 31));
-  const [remainingTime, setRemainingTime] = useState(INITIAL_STATE);
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { 
+      targetDate: new Date(2021, 11, 31),
+      remainingTime: INITIAL_STATE,
+    };
+    this.timer = 0;
+  }
 
-  const getRamainingUnits = () => {
+  getRamainingUnits = () => {
+    const { targetDate } = this.state;
     const current = new Date();
     const difference = targetDate.getTime() - current.getTime();
     let timeLeft = INITIAL_STATE;
@@ -42,42 +48,51 @@ function App() {
 
     return timeLeft;
   }
-  const updateTime = () => {
-    const { days, hours, minutes, seconds } = getRamainingUnits();
-    setRemainingTime({
-      days,
-      hours,
-      minutes,
-      seconds,
+
+  updateTime = () => {
+    const { days, hours, minutes, seconds } = this.getRamainingUnits();
+    this.setState({
+      remainingTime: {
+        days,
+        hours,
+        minutes,
+        seconds,
+      }
     });
   };
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      updateTime();
+  componentDidMount() {
+    this.timer = setInterval(() => {
+      this.updateTime();
     }, 1000);
-  
-    return () => clearTimeout(timer);
-  }, [remainingTime])
+  }
 
+  componentWillUnmount() {
+    clearInterval(this.timer);
+    this.timer = 0;
+  }
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <div className="countdown-title">Countdown</div>
-        <div className="main-clock">
-          <DisplayBox unitName='days' unitValue={remainingTime.days} />
-          <DisplayBox unitName='hours' unitValue={remainingTime.hours} />
-          <DisplayBox unitName='minutes' unitValue={remainingTime.minutes} />
-          <DisplayBox unitName='seconds' unitValue={remainingTime.seconds} />
-        </div>
-        <footer>
-          <p>Till {targetDate.getFullYear()}/{targetDate.getMonth()+1}/{targetDate.getDate()}</p>
-          <DisplayToday />
-        </footer>
-      </header> 
-    </div>
-  );
+  render() {
+    const { targetDate, remainingTime } = this.state;
+   
+    return (
+      <div className="App">
+        <header className="App-header">
+          <div className="countdown-title">Countdown</div>
+          <div className="main-clock">
+            <DisplayBox unitName='days' unitValue={remainingTime.days} />
+            <DisplayBox unitName='hours' unitValue={remainingTime.hours} />
+            <DisplayBox unitName='minutes' unitValue={remainingTime.minutes} />
+            <DisplayBox unitName='seconds' unitValue={remainingTime.seconds} />
+          </div>
+          <footer>
+            <p>Till {targetDate.getFullYear()}/{targetDate.getMonth()+1}/{targetDate.getDate()}</p>
+            <DisplayToday />
+          </footer>
+        </header> 
+      </div>
+    );
+  }
 }
 
 export default App;
