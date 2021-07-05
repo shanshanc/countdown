@@ -29,7 +29,7 @@
 }
 
 .countdown-title {
-  font-size: 2.5rem;
+  /* font-size: 2.5rem; */
   margin-bottom: 2rem;
 }
 
@@ -41,6 +41,7 @@
 
 footer {
   margin-top: 2rem;
+  font-size: 1rem;
 }
 
 

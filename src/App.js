@@ -1,7 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React from 'react';
 
 import DisplayBox from './components/displayBox';
 import DisplayToday from './components/displayToday';
+import TargetDate from './components/TargetDate';
 import './App.css';
 
 const DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000;
@@ -16,14 +17,17 @@ const INITIAL_STATE = {
   seconds: 0,
 }
 
+const TODAY = new Date();
+const DEFAULT_DATE = new Date(TODAY.setDate(TODAY.getDate() + 20));
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      targetDate: new Date(2021, 11, 31),
+      targetDate: DEFAULT_DATE,
       remainingTime: INITIAL_STATE,
     };
     this.timer = 0;
+    this.handleTargetDateChange = this.handleTargetDateChange.bind(this);
   }
 
   getRamainingUnits = () => {
@@ -61,6 +65,12 @@ class App extends React.Component {
     });
   };
 
+  handleTargetDateChange(date) {
+    this.setState({
+      targetDate: date
+    });
+  }
+
   componentDidMount() {
     this.timer = setInterval(() => {
       this.updateTime();
@@ -78,7 +88,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <header className="App-header">
-          <div className="countdown-title">Countdown</div>
+          <h1 className="countdown-title">Countdown</h1>
           <div className="main-clock">
             <DisplayBox unitName='days' unitValue={remainingTime.days} />
             <DisplayBox unitName='hours' unitValue={remainingTime.hours} />
@@ -86,7 +96,10 @@ class App extends React.Component {
             <DisplayBox unitName='seconds' unitValue={remainingTime.seconds} />
           </div>
           <footer>
-            <p>Till {targetDate.getFullYear()}/{targetDate.getMonth()+1}/{targetDate.getDate()}</p>
+            <TargetDate
+              targetDate={targetDate}
+              handleTargetDateChange={this.handleTargetDateChange}
+            />
             <DisplayToday />
           </footer>
         </header> 

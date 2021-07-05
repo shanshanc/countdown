@@ -1,10 +1,12 @@
 import React from 'react';
 
+import './displayToday.css'
+
 const DisplayToday = () => {
   const currentDate = new Date();
   
   return (
-    <div className="countdown-box">
+    <div className="today">
       <p>Today: {currentDate.getFullYear()}/{currentDate.getMonth()+1}/{currentDate.getDate()}</p>
     </div>
   )
